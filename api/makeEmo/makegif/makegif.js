@@ -14,16 +14,30 @@ const getLoopImgs = async (req, res, next) => {
       code:400
     });
   }else{
-    //先减掉积分
-    let newScroe = +userScroe - makeBaseEmoScroe;
-    await User.updateUserScroeById(userId,newScroe);
-    await ScroeRecord.sign(userId,1,"制作表情","制作模版动态表情",makeBaseEmoScroe,newScroe,getDateStr());
-    let textInfo = req.body.textinfo;
-    let path = 'public' + req.body.path;
-    let gifGenerator = new GifGenerator(textInfo,path);
-    let demo = await gifGenerator.generate();
-    MakeBaseEmo.insertData(demo,userId);
-    res.json(global.toJson(200, '制作成功',{path:demo,code:200}))
+    setImmediate(async ()=>{
+      //先减掉积分
+      let newScroe = +userScroe - makeBaseEmoScroe;
+      await User.updateUserScroeById(userId,newScroe);
+      await ScroeRecord.sign(userId,1,"制作表情","制作模版动态表情",makeBaseEmoScroe,newScroe,getDateStr());
+      let textInfo = req.body.textinfo;
+      let path = 'public' + req.body.path;
+      let gifGenerator = new GifGenerator(textInfo,path);
+      let demo = await gifGenerator.generate();
+      MakeBaseEmo.insertData(demo,userId);
+      res.json(global.toJson(200, '制作成功',{path:demo,code:200}))
+    })
+    // process.nextTick(async ()=>{
+    //   //   //先减掉积分
+    //     let newScroe = +userScroe - makeBaseEmoScroe;
+    //     await User.updateUserScroeById(userId,newScroe);
+    //     await ScroeRecord.sign(userId,1,"制作表情","制作模版动态表情",makeBaseEmoScroe,newScroe,getDateStr());
+    //     let textInfo = req.body.textinfo;
+    //     let path = 'public' + req.body.path;
+    //     let gifGenerator = new GifGenerator(textInfo,path);
+    //     let demo = await gifGenerator.generate();
+    //     MakeBaseEmo.insertData(demo,userId);
+    //     res.json(global.toJson(200, '制作成功',{path:demo,code:200}))
+    // })
   }
 };
 

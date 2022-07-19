@@ -82,7 +82,7 @@ const login = async (req, res, next) => {
   } else{//微信小程序
     var  options = {
       method: 'get',
-      url: "https://api.weixin.qq.com/sns/jscode2session?appid=xxx&secret=xxx&js_code="+code+"&grant_type=authorization_code",
+      url: "https://api.weixin.qq.com/sns/jscode2session?appid=wx2c8c2bc83e9d6c91&secret=3ef7721fde8d59d92918e1be6174ea23&js_code="+code+"&grant_type=authorization_code",
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
